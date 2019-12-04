@@ -9,9 +9,9 @@ fun main() {
     val executionTime = measureTimeMillis {
         val intersections =
             input.flatMap { wire -> findWirePath(wire).withIndex().distinctBy { it.value } }.groupBy { it.value }
-                .filter { it.value.size > 1 }
-        val part1 = intersections.map { it.key.distance(Coordinates(0, 0)) }.sorted()[1]
-        val part2 = intersections.map { item -> item.value.map { it.index }.sum() }.sorted()[1]
+                .filter { it.value.size > 1 && it.key != Coordinates(0, 0) }
+        val part1 = intersections.map { it.key.distance(Coordinates(0, 0)) }.min()
+        val part2 = intersections.map { item -> item.value.map { it.index }.sum() }.min()
         println("Part 1: $part1\nPart 2: $part2")
     }
     println("Execution Time = $executionTime ms")
