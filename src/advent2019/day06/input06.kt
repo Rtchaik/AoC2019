@@ -1,21 +1,5 @@
 package advent2019.day06
 
-val test = listOf(
-    """COM)B""",
-    """B)C""",
-    """C)D""",
-    """D)E""",
-    """E)F""",
-    """B)G""",
-    """G)H""",
-    """D)I""",
-    """E)J""",
-    """J)K""",
-    """K)L""",
-    """K)YOU""",
-    """I)SAN"""
-)
-
 val input = listOf(
     """QVP)6MB""",
     """LV9)5WD""",
