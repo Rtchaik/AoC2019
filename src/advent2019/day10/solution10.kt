@@ -2,6 +2,7 @@ package advent2019.day10
 
 import utils.Coordinates
 import utils.distance
+import utils.getAngle
 import kotlin.system.measureTimeMillis
 
 fun main() {
@@ -14,7 +15,8 @@ fun main() {
                 .groupBy { it.second }
         }.maxBy { it.second.values.size }!!
         val monStation =
-            maxAster.second.toSortedMap().values.toList().map { curr -> curr.map { it.first }.sortedBy { it.distance(maxAster.first) } }
+            maxAster.second.toSortedMap().values.toList()
+                .map { curr -> curr.map { it.first }.sortedBy { it.distance(maxAster.first) } }
         val part1 = monStation.size
         val maxDepth = monStation.maxBy { it.size }!!.size
         val bet =
@@ -23,12 +25,4 @@ fun main() {
         println("Part 1: $part1\nPart 2: $part2")
     }
     println("Execution Time = $executionTime ms")
-}
-
-private fun getAngle(a: Coordinates, b: Coordinates, c: Coordinates): Double {
-    val degr = Math.toDegrees(
-        Math.atan2((c.row - b.row).toDouble(), (c.column - b.column).toDouble()) -
-                Math.atan2((a.row - b.row).toDouble(), (a.column - b.column).toDouble())
-    )
-    return if (degr < 0) 360 + degr else degr
 }
