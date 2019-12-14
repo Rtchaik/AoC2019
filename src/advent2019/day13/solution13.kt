@@ -2,6 +2,7 @@ package advent2019.day13
 
 import advent2019.day09.runProgram
 import utils.Coordinates
+import kotlin.math.sign
 import kotlin.system.measureTimeMillis
 
 fun main() {
@@ -24,11 +25,7 @@ private tailrec fun runGame(
     changes.forEach { outputs[it.first] = it.second }
     val ball = changes.find { it.second == 4 } ?: outputs.filterValues { it == 4 }.entries.first().toPair()
     val paddle = changes.find { it.second == 3 } ?: outputs.filterValues { it == 3 }.entries.first().toPair()
-    val action = when {
-        ball.first.column < paddle.first.column -> -1
-        ball.first.column > paddle.first.column -> 1
-        else -> 0
-    }
+    val action = (ball.first.column - paddle.first.column).sign
     return if (outputs.none { it.value == 2 }) outputs[Coordinates(-1, 0)]!! else runGame(
         turn.first.toMutableMap(), mutableListOf(action.toLong()), turn.third, outputs
     )
