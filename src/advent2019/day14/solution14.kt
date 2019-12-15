@@ -18,14 +18,14 @@ fun main() {
 
 private tailrec fun findOre(
     reactions: List<List<Pair<String, Int>>>, mode: Boolean = true,
-    needed: MutableMap<String, Double> = mutableMapOf("FUEL" to 1.0)
-): Double = if (reactions.isEmpty()) needed.getOrDefault("ORE", 0.0) else {
+    needed: MutableMap<String, Double> = mutableMapOf("FUEL" to 1.0).withDefault { 0.0 }
+): Double = if (reactions.isEmpty()) needed.getValue("ORE") else {
     val current =
         needed.keys.first { key -> reactions.map { reaction -> reaction.count { it.first == key } }.sum() == 1 }
     val formula = reactions.find { it[0].first == current }!!
-    val quantity = needed.getOrDefault(current, 0.0) / formula[0].second
+    val quantity = needed.getValue(current) / formula[0].second
     val quantityFinal = if (mode) ceil(quantity) else quantity
     needed.remove(current)
-    formula.drop(1).forEach { needed[it.first] = needed.getOrDefault(it.first, 0.0) + it.second * quantityFinal }
+    formula.drop(1).forEach { needed[it.first] = needed.getValue(it.first) + it.second * quantityFinal }
     findOre(reactions - listOf(formula), mode, needed)
 }
