@@ -23,7 +23,7 @@ private tailrec fun repairDroid(
     val newLoc = currentPos.flatMap { current ->
         "1423".mapIndexedNotNull { idx, dir ->
             val new = current.key + directions[idx]
-            if (locations.getOrDefault(new, '0') == '0') {
+            if (locations[new].isNullOrEmpty()) {
                 val status = runProgram(
                     current.value.toMutableMap(), mutableListOf(dir.toString().toLong()), Pair(0L, 0L)
                 )
