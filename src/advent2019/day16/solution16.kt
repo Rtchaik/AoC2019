@@ -7,7 +7,7 @@ import kotlin.system.measureTimeMillis
 fun main() {
     val executionTime = measureTimeMillis {
         val signal = input.map { it.toString().toInt() }
-        val part1 = fftPhase(signal).take(8).joinToString("")
+        val part1 = runFft(signal).take(8).joinToString("")
 
         val offset = input.take(7).toInt()
         val sigRev = signal.reversed()
@@ -16,7 +16,7 @@ fun main() {
                 sigRev.take(sigSize - offset % sigSize))
         repeat(100) {
             output.offer(output.poll())
-            repeat(output.size - 1) { output.offer((output.poll() + output.last) % 10) }
+            repeat(output.size - 1) { output.offer((output.poll() + output.peekLast()) % 10) }
         }
         val part2 = (0..7).map { output.pollLast() }.joinToString("")
 
@@ -25,9 +25,9 @@ fun main() {
     println("Execution Time = $executionTime ms")
 }
 
-private tailrec fun fftPhase(signal: List<Int>, count: Int = 0): List<Int> =
-    if (count == 100) signal else {
-        fftPhase((signal.indices).map {
+private tailrec fun runFft(signal: List<Int>, phase: Int = 0): List<Int> =
+    if (phase == 100) signal else {
+        runFft((signal.indices).map {
             abs(signal.drop(it).chunked(it + 1).mapIndexed { idx, list ->
                 when (idx % 4) {
                     0 -> list.sum()
@@ -35,5 +35,5 @@ private tailrec fun fftPhase(signal: List<Int>, count: Int = 0): List<Int> =
                     else -> 0
                 }
             }.sum()) % 10
-        }, count.inc())
+        }, phase.inc())
     }
