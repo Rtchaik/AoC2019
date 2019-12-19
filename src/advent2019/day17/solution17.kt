@@ -9,10 +9,9 @@ import kotlin.system.measureTimeMillis
 fun main() {
     val executionTime = measureTimeMillis {
         val program = input.split(",").mapIndexed { idx, s -> idx.toLong() to s.toLong() }.toMap()
-        val scaffoldsRaw =
-            runProgram(program.toMutableMap()).second.map { it.toChar() }.joinToString("").split("\n").dropLast(2)
         val scaffoldsMap =
-            scaffoldsRaw.mapIndexed { idxRow, s -> s.mapIndexed { idxCol, c -> Coordinates(idxCol, idxRow) to c } }
+            runProgram(program.toMutableMap()).second.map { it.toChar() }.joinToString("").split("\n")
+                .dropLast(2).mapIndexed { idxRow, s -> s.mapIndexed { idxCol, c -> Coordinates(idxCol, idxRow) to c } }
                 .flatten().toMap().withDefault { '.' }
         val part1 = scaffoldsMap.filterValues { it == '#' }.filter { current ->
             directions.map { it + current.key }.filter { scaffoldsMap.getOrDefault(it, '.') == '#' }.size == 4
