@@ -50,9 +50,8 @@ fun main() {
 private fun findProperInv(inventory: List<String>, newProg: Triple<Map<Long, Long>, List<Long>, Pair<Long, Long>>) {
     (0..7).forEach { len ->
         (0..len).asSequence()
-            .fold(listOf(listOf(""))) { acc, i -> acc.flatMap { list -> inventory.map { listOf(it) + list } } }
-            .map { it.dropLast(1) }
-            .filterNot { it.size != it.distinct().size }
+            .fold(listOf(emptyList<String>())) { acc, _ -> acc.flatMap { list -> (inventory - list).map { (listOf(it) + list).sorted() } } }
+            .distinct()
             .map { it.map { s -> "drop $s" } }.toList()
             .forEach { comb ->
                 val newCommand = comb + listOf("""west""")
